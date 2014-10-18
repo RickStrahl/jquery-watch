@@ -30,10 +30,11 @@
             id = "_watcher";
 
         return this.each(function() {
-            var _t = this;
+            var el = this;
             var el$ = $(this);
-            var fnc = function() {
-                __watcher.call(_t, id);
+            var fnc = function (p1, p2, p3, p4) {
+                console.log(p1, p2, p3, p4);
+                __watcher.call(el, id);
             };
 
             var data = {
@@ -54,15 +55,15 @@
             hookChange(el$, id, data);
         });
 
-        function hookChange(el$, id, data) {
-            el$.each(function() {
-                var el = $(this);
+        function hookChange(element$, id, data) {
+            element$.each(function() {
+                var el$ = $(this);
 
                 if (window.MutationObserver) {
-                    var observer = el.data("__watcherObserver");
+                    var observer = el$.data("__watcherObserver");
                     if (observer == null) {
                         observer = new MutationObserver(data.fnc);
-                        el.data("__watcherObserver", observer);
+                        el$.data("__watcherObserver", observer);
                     }
                     observer.observe(this, {
                         attributes: true,
@@ -81,7 +82,7 @@
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
-            var _t = this;
+            var el = this;
 
             if (!w.func)
                 return;
@@ -110,7 +111,7 @@
                 }
             }
             if (changed)
-                w.func.call(_t, w, i);
+                w.func.call(el, w, i);
 
             // rebind event
             hookChange(el$, id, w);
