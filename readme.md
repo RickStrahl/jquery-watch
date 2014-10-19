@@ -40,7 +40,7 @@ el.watch({
 ```
 You simply specify the CSS styles or attributes to monitor and then hook up a call back function, and wait for change notifications to come in.
 
-Note that you can get quite a lot of notifications especially if you're monitoring things like opacity during a fade operation for example, or top/left during drag operations, so you should keep the code in this function to a minimum.
+Note that you can get quite a lot of notifications especially if you're monitoring things like opacity during a fade operation or top/left during drag operations, so you should keep the code in this function to a minimum.
 
 ## Syntax ##
 The syntax uses standard jQuery plug-in behavior attached to an element selector:
@@ -95,8 +95,10 @@ If you only care to be notified and you don't care about changed or updated valu
 
 If you want to know which element caused the event to fire you can use the code shown above to retrieve the `changedProperty` and `newValue` for property.
 
+> Note that the change event tracking is turned off for the duration of the callback function execution to avoid recursive events firing causing a potential browser lockup. If you need to make changes that require updating the DOM that affect further change events, you should use `setTimeout()` to delay execution until after the callback has completed.
 
-### Example Usage ###
+
+## Example Usage ##
 As an example consider you have a couple of HTML elements - two boxes and you want to slave one box to the other:
 
 ```html
