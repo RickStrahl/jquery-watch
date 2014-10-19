@@ -1,31 +1,28 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>jquery-watch Sample</title>
-    <script src="scripts/jquery-1.11.1.min.js" type="text/javascript"></script>
-
-    <!-- just for the samples -->
-    <script src="scripts/ww.jquery.min.js" type="text/javascript"></script>
-    <script src="scripts/jquery-watch.js"></script>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jquery-watch Sample</title>    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <style>
         .notebox,.shadow {            
-            top: 230px;
-            left: 200px;
-            width: 300px;
-            height: 250px;
+            top: 310px;
+            left: 40px;
+            width: 270px;
+            height: 200px;
             position: absolute;
             z-index: 20;
             padding: 25px;
             border-radius: 4px;
+            font-size: 0.9em;
             text-align: center;
             background-color: lightsteelblue;
         }
         .shadow {
-            left: 545px;
-            top: 233px;
+            left: 345px;            
             background-color: silver;
             z-index: 19;
             position: absolute;            
@@ -41,7 +38,7 @@
         }
         .descriptionheader {
             padding: 20px;
-            background: lightsteelblue;
+            background: #d8e3f2;
         }
     </style>
 
@@ -52,7 +49,8 @@
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+                            data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -62,7 +60,7 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left: 180px;">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="http://github.com/rickstrahl/jquery-watch"><i class="fa fa-github"></i> GitHub</a></li>
                         <li><a id="lnkRedisplayWindow" href="javascript:{}"><i class="fa fa-close"></i> Show/Hide Window</a></li>
@@ -71,13 +69,12 @@
                 </div>
             </div>
         </nav>
+
         <aside class="descriptionheader">
-            This page demonstrates the watcher plug-in that can be used to observe any Css property
-            change and cause a notification in response. In this example a drag operation is performed
-            on the blue box and the black box that simulates a shadow is dragged along based on the
-            notification of various Css properties includes top, left, height and width, visible etc.
-            Notice how the shadow stays 'attached' to the blue box which is all handled via the
-            event handler fired on change of each property.
+            This sample demonstrates capturing CSS and Attribute changes and firing events in
+            response to the changes. You can drag around the left window and the right window
+            should follow and also follow the opacity setting. Every 3 seconds the class is 
+            changed on the master and the slave window will also change its class.
         </aside>
 
         <div id="AlertBox" class="alert alert-warning" style="display:none;margin-top:none; border-radius:0">
@@ -91,10 +88,9 @@
             <div class="container">
                 <div id="notebox" class="notebox">
                     <p>
-                        This is the master window. Go ahead drag me around and close me!
+                        This is the master window. Go ahead drag me around and close me!                        
                     </p>
-                    <p>
-                        The shadow window should follow me around and close/fade when I do.
+                    <p>The shadow window should follow me around and close/fade when I do.
                     </p>
                     <p>
                         There's also a timer, that fires and alternates a CSS class every
@@ -112,71 +108,84 @@
 
 
         </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                var counter = 0;
-                $("#shadow").show();
-                var el = $("#notebox");
-                el.draggable();
+        <script src="scripts/jquery-1.11.1.min.js" type="text/javascript"></script>
 
-                // Update a CSS Class on a timer
-                var state = false;
-                setInterval(function () {
-                    //$("#notebox").css("Drag me around " + new Date());
-                    $("#notebox")
-                        .removeClass("class_true")
-                        .removeClass("class_false")
-                        .addClass("class_" + state);
-                    state = !state;
-                }, 3000);
+        <!-- just for the samples -->
+        <script src="scripts/ww.jquery.min.js" type="text/javascript"></script>
+        <script src="scripts/jquery-watch.js"></script>
 
+        <script>                
+            var el = $("#notebox");
+            el.draggable();
 
-                el.watch("top,left,opacity,attr_class", function (data, i) {
-                    // you can capture which attribute has changed
-                    var propChanged = data.props[i];
-                    var valChanged = data.vals[i];
-                    counter++;
-                    showStatus(" Changed Property: " + propChanged + "  -  New Value: " + valChanged + " - Event Count:" + counter);
+            // Update a CSS Class on a 3 sec timer
+            var state = false;
+            setInterval(function() {                
+                $("#notebox")
+                    .removeClass("class_true")
+                    .removeClass("class_false")
+                    .addClass("class_" + state);
+                state = !state;
+            }, 3000);
 
-                    // element affected is 'this'
-                    var el = $(this);
-                    var sh = $("#shadow");
+            // Hook up CSS and Class watch operation
+            el.watch({
+                properties: "top,left,opacity,attr_class",
+                callback: watchShadow
+            });            
 
-                    // get master current position
-                    var pos = el.position();
-                    var w = el.outerWidth();
-                    var h = el.outerHeight();
+            var counter = 0;
 
-                    // and update shadow accordingly
-                    sh.css({
-                        width: w,
-                        height: h,
-                        left: pos.left + w + 4,
-                        top: pos.top,
-                        display: el.css("display"),
-                        opacity: el.css("opacity")
-                    });
+            // this is the handler function that responds
+            // to the events. Passes in:
+            // data.props[], data.vals[] and an index for active item
+            function watchShadow(data, i) {
+                // you can capture which attribute has changed
+                var propChanged = data.props[i];
+                var valChanged = data.vals[i];
 
-                    // Class attribute is more tricky since there are
-                    // multiple classes on the parent - we have to explicitly
-                    // check for class existance and assign
-                    sh.removeClass("class_true")
-                      .removeClass("class_false");
-                    if(el.hasClass("class_true"))
-                        sh.addClass("class_true");
+                counter++;
+                showStatus(" Changed Property: " + propChanged +
+                    "  -  New Value: " + valChanged +
+                    " - Event Count:" + counter);
 
+                // element affected is 'this'
+                var el = $(this);
+                var sh = $("#shadow");
+
+                // get master current position
+                var pos = el.position();
+                var w = el.outerWidth();
+                var h = el.outerHeight();
+
+                // and update shadow accordingly
+                sh.css({
+                    width: w,
+                    height: h,
+                    left: pos.left + w + 4,
+                    top: pos.top,
+                    display: el.css("display"),
+                    opacity: el.css("opacity")
                 });
 
-                function showStatus(msg) {
-                    if (!msg) {
-                        $("#AlertBox").hide();
-                        return;
-                    }
-                    $("#msg").text(msg);
-                    $("#AlertBox").show();
-                }
-            });
+                // Class attribute is more tricky since there are
+                // multiple classes on the parent - we have to explicitly
+                // check for class existance and assign
+                sh.removeClass("class_true")
+                    .removeClass("class_false");
+                if (el.hasClass("class_true"))
+                    sh.addClass("class_true");
+            }
 
+            function showStatus(msg) {
+                if (!msg) {
+                    $("#AlertBox").hide();
+                    return;
+                }
+                $("#msg").text(msg);
+                $("#AlertBox").show();
+            }
+                        
             $("#lnkRedisplayWindow").click(function () {
                 var el$ = $("#notebox");
 
@@ -185,6 +194,23 @@
                 else
                     el$.fadeIn(1000);
             });
+
+//var element = document.getElementById("Notebox");
+
+//var observer = new MutationObserver(observerChanges);
+//observer.observe(element, {
+//    attributes: true,
+//    subtree: opt.watchChildren,
+//    childList: opt.watchChildren,
+//    characterData: true
+//});
+
+///// when you're done observing
+//observer.disconnect();
+
+//function observeChanges(mutationRecord, mutationObserver) {
+//    console.log(mutationRecord);
+//}
         </script>
     </form>
 

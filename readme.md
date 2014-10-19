@@ -5,6 +5,12 @@
 This small jQuery plug-in can help monitor changes to any DOM element CSS classes or attributes on an element. You can specify an element and any number of CSS properties or attribute names you want to monitor and if any of them are changed are notified of the change via a function delegate you provide.
 
 The function delegate receives an instance of the plug-in and an index into the property/value array that holds both the old and new values that allow you to update values as needed.
+
+### Syntax ###
+
+	$("#Element").watch("top,left,height,width,opacity,attr_class",
+                        function(
+
 This library came about as part of the following blog post:
 * **[JavaScript JSON Date Parsing and real Dates](http://weblog.west-wind.com/posts/2014/Jan/06/JavaScript-JSON-Date-Parsing-and-real-Dates)**
 
