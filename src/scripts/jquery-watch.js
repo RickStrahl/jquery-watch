@@ -1,4 +1,14 @@
-﻿(function($, undefined) {
+﻿/// <reference path="jquery.js" />
+/*
+jquery-watcher 
+Version 1.1 - 10/20/2014
+(c) 2014 Rick Strahl, West Wind Technologies 
+www.west-wind.com
+
+Licensed under MIT License
+http://en.wikipedia.org/wiki/MIT_License
+*/
+(function($, undefined) {
     $.fn.watch = function(options) {
         /// <summary>
         /// Allows you to monitor changes in a specific
@@ -10,41 +20,35 @@
         /// Uses the MutationObserver API of the DOM and
         /// falls back to setInterval to poll for changes
         /// for non-compliant browsers (pre IE 11)
-        /// </summary>    
-        /// <param name="prop" type="String">CSS Properties to watch sep. by commas
-        /// You can also prefix attr_ to monitor attribute changes. So attr_class
-        /// will detect if the class attribute has changed.
-        /// </param>    
-        /// <param name="callback" type="Function">
-        /// Function called when the value has changed.
-        /// Receives: data and index parameters
-        /// Data contains props[] and vals[] arrays
-        /// and props[i] and props[i] gets changes property
-        /// and value.
-        /// </param>    
+        /// </summary>            
         /// <param name="options" type="Object">
-        /// Option to set - see code below.
+        /// Option to set - see comments in code below.
         /// </param>        
         /// <returns type="jQuery" /> 
 
         var opt = $.extend({
-            // properties to monitor
+            // CSS styles or Attributes to monitor as comma delimited list
+            // For attributes use a attr_ prefix
+            // Example: "top,left,opacity,attr_class"
             properties: null,
+
             // interval for 'manual polling' (IE 10 and older)            
             interval: 100,
+
             // a unique id for this watcher instance
             id: "_watcher",
-            // flag to determine whether children are watched            
+
+            // flag to determine whether child elements are watched            
             watchChildren: false,
-            // callback function if not passed in callback parameter
-            callback: null,
+
+            // Callback function if not passed in callback parameter   
+            callback: null
         }, options);
 
         return this.each(function() {
             var el = this;
             var el$ = $(this);
-            var fnc = function (mRec, mObs) {
-                console.log(mRec);
+            var fnc = function(mRec, mObs) {                
                 __watcher.call(el, opt.id);
             };
 
@@ -82,13 +86,12 @@
                         childList: opt.watchChildren,
                         characterData: true
                     });
-                }
-                else
+                } else
                     data.intervalId = setInterval(data.fnc, interval);
             });
         }
 
-        function __watcher(id) {            
+        function __watcher(id) {
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
@@ -147,8 +150,8 @@
         });
         return this;
     }
-    String.prototype.startsWith = function (sub) {                        
-        if (this.length == 0) return false;        
+    String.prototype.startsWith = function(sub) {
+        if (this.length == 0) return false;
         return sub == this.substr(0, sub.length);
     }
-})(jQuery,undefined);
+})(jQuery, undefined);

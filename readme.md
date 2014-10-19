@@ -2,159 +2,200 @@
 # jquery-watch 
 #### A jQuery plug-in to notify you of CSS or Attribute changes in an element ####
 
-This small jQuery plug-in can help monitor changes to any DOM element CSS classes or attributes on an element. You can specify an element and any number of CSS properties or attribute names you want to monitor and if any of them are changed are notified of the change via a function delegate you provide.
+This small jQuery plug-in allows you to monitor changes to any DOM element's CSS classes or attributes and fire a callback in response to any change in the monitored styles or attributes. 
 
-The function delegate receives an instance of the plug-in and an index into the property/value array that holds both the old and new values that allow you to update values as needed.
+You can specify an element and any number of CSS properties or attribute names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives a object with an array of property names and current values, plus an index for the one that triggered the change.
 
-### Syntax ###
+## Usage ##
+To use the plugin add a reference to jQuery and a reference to this plugin to your page:
 
-	$("#Element").watch("top,left,height,width,opacity,attr_class",
-                        function(
-
-This library came about as part of the following blog post:
-* **[JavaScript JSON Date Parsing and real Dates](http://weblog.west-wind.com/posts/2014/Jan/06/JavaScript-JSON-Date-Parsing-and-real-Dates)**
-
-This library provides:
-
-* **JSON.dateParser**<br/>
-  JSON parser extension that can be used with JSON.parse() 
-  to parse dates with explicit calls to JSON.parse().
-
-* **JSON.parseWithDate()**<br/>
-  Function to provide a wrapper function
-  that behaves like JSON.parse() but parses dates.
-
-* **JSON.useDateParser()**<br/> 
-  Globally replace JSON.parse() with
-  JSON.parseWithDates to affect all JSON.parse() operations within
-  the current page/scope. Affects all JSON operations including 
-  framework JSON parsing such as jQuery.getJSON() etc.
-
-* **JSON.dateStringToDate()**<br/> 
-  Safely converts JSON ISO and MSAJAX
-  dates, raw ISO and MSAJAX string values and dates to JavaScript
-  dates. This function is a simple helper to guarantee you get a 
-  date value regardless of which format the date is in with an optional
-  override to return a known value if the date can't be resolved.
-
-##Usage##
-
-###JSON.parseWithDate###
-Manual JSON parsing with automatic date conversion:
-
-```javascript
-var date = new Date();
-var json = JSON.stringify(date);
-
-var date2 = JSON.parseWithDate(json);
-console.log(date2);   // date: Wed Jan 01 2014 13:28:56 GMT-1000 (Hawaiian Standard Time) 
+```html
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="scripts/jquery-watch.min.js"></script>
 ```
 
-Likewise you can apply that to complex objects that contain dates:
+To hook up an element for monitoring in script code use:
 
 ```javascript
-var obj = {
-    id: "141923asd1",
-    name: "rick",
-    entered: new Date(),
-    updated: new Date()
-};
-var json = JSON.stringify(obj);
+// some element to monitor
+var el = $("#notebox");
 
-var obj2 = JSON.parseWithDate(json);
+// hook up the watcher
+el.watch({
+    // specify CSS styles or attribute names to monitor
+	properties: "top,left,opacity,attr_class",
 
-equal(!obj2.entered.getTime, false, "Date should be a date object");
-equal(obj2.entered.toString(), obj.entered.toString(), "Dates should be equal");
+    // callback function when a change is detected
+    callback: function(data, i) {
+		var propChanged = data.props[i];
+        var newValue = data.vals[i];
+	
+		var el = this;
+		var el$ = $(this);
+
+        // do what you need based on changes
+        // or do your own checks
+	}
+});
+```
+You simply specify the CSS styles or attributes to monitor and then hook up a call back function, and wait for change notifications to come in.
+
+Note that you can get quite a lot of notifications especially if you're monitoring things like opacity during a fade operation for example, or top/left during drag operations, so you should keep the code in this function to a minimum.
+
+## Syntax ##
+The syntax uses standard jQuery plug-in behavior attached to an element selector:
+
+```javascript
+$("#Element").watch(options)
 ```
 
-
-###JSON.useDateParser###
-useDateParser() can globally replace the JSON.parse() function with the
-JSON.parseWithDate() function, which results in automatically converting dates
-for all JSON operations on the global scope. This allows automatic conversions
-for all subsequent JSON.parse() calls including those inside of frameworks.
+where options looks like this:
 
 ```javascript
-// enable global JSON date parsing
-JSON.useDateParser();
-       
-var date = new Date();
-var json = JSON.stringify(date);
+var options = {
+    // CSS styles or Attributes to monitor as comma delimited list
+    // For attributes use a attr_ prefix
+    // Example: "top,left,opacity,attr_class"
+    properties: null,
 
-// using just plain JSON.parse() should decode dates
-var date2 = JSON.parse(json);
-console.log(date2);
+    // interval for 'manual polling' (IE 10 and older)            
+    interval: 100,
 
-equal(!date2.getTime, false, "Date should be a date object");
-equal(date2.toString(), date.toString(), "Dates should be equal");
+    // a unique id for this watcher instance
+    id: "_watcher",
 
-// optionally replace original parser
-JSON.useDateParser(false);
+    // flag to determine whether child elements are watched            
+    watchChildren: false,
+
+    // Callback function if not passed in callback parameter   
+    callback: null
+}
 ```
 
-The following example demonstrates using $.getJSON() with automatic
-date conversion:
+The main required property to set is `properties` which can contain any CSS Style property (top, left, opacity, display etc.) or an attribute name prefixed by `attr_` (attr_class,attr_readonly,attr_src etc.).  
+
+The other required property is the `callback` property which lets you specify a callback function called when one (or more) of the properties change.  The callback function receives two parameters which is an instance of a data object that contains an array of the properties monitored and the latest values.
+
+An implementation of the callback function looks like this:
 
 ```javascript
-// enable global JSON date parsing
-JSON.useDateParser();    
+function changeCallback(data, i) {
+	// data object and index into the arrays
+    var changedProperty = data.props[i];
+    var newValue = data.vals[i];
+    
+    // this is the element affected
+    var el$ = $(this)
 
-$.getJSON("JsonWithDate.txt")
-    .done(function(data) {
-        console.log("jquery result.entered: " + data.entered +
-            "  result.updated: " + data.updated);
+    //... do your logic
+}
+```
 
-        equal(!data.entered.getTime, false, "Entered should be a date");            
-    })
-    .success(function () {        
-        // Optionally replace original parser
-        JSON.useDateParser(false);
+If you only care to be notified and you don't care about changed or updated values, you can ignore the parameters - which is actually quite common. In that case you can do your own checks in your code to find what's changed or update other properties as needed.
+
+If you want to know which element caused the event to fire you can use the code shown above to retrieve the `changedProperty` and `newValue` for property.
+
+
+### Example Usage ###
+As an example consider you have a couple of HTML elements - two boxes and you want to slave one box to the other:
+
+```html
+<div class="container">
+    <div id="notebox" class="notebox">
+        <p>
+            This is the master window. Go ahead drag me around and close me!
+        </p>
+        <p>
+            The shadow window should follow me around and close/fade when I do.
+        </p>
+        <p>
+            There's also a timer, that fires and alternates a CSS class every
+            3 seconds.
+        </p>
+    </div>
+
+    <div id="shadow" class="shadow">
+        <p>I'm the Shadow Window!</p>
+        <p>I'm shadowing the Master Window.</p>
+        <p>I'm a copy cat</p>
+        <p>I do as I'm told.</p>
+    </div>
+</div>
+```
+There are two boxes #notebox and #shadow and what we want to do is monitor changes on #notebox and affect the behavior of #shadow to keep #shadow tied and synched to the #notebox. 
+
+The following code monitors #notebox so we can tell when a monitored value is changed:
+
+```javascript
+<script>
+var el = $("#notebox");
+el.draggable();
+
+// Also update a CSS Class on a 3 sec timer
+var state = false;
+setInterval(function () {
+    $("#notebox")
+        .removeClass("class_true")
+        .removeClass("class_false")
+        .addClass("class_" + state);
+    state = !state;
+}, 3000);
+
+
+// Hook up CSS and Class watch operation
+el.watch({
+    properties: "top,left,opacity,attr_class",
+    callback: watchShadow
+});
+
+// this is the handler function that responds
+// to the events. Passes in:
+// data.props[], data.vals[] and an index for active item
+function watchShadow(data, i) {
+    // you can capture which attribute has changed
+    var propChanged = data.props[i];
+    var valChanged = data.vals[i];
+
+    // element affected is 'this'
+    var el = $(this);
+    var sh = $("#shadow");
+
+    // get master current position
+    var pos = el.position();
+    var w = el.outerWidth();
+    var h = el.outerHeight();
+
+    // and update shadow accordingly
+    sh.css({
+        width: w,
+        height: h,
+        left: pos.left + w + 4,
+        top: pos.top,
+        display: el.css("display"),
+        opacity: el.css("opacity")
     });
-```
 
-###JSON.dateParser###
-dateParser is the JSON parse extension that is used to filter dates from
-date strings. You can use this filter directly with JSON.parse() although
-I'd recommend you use JSON.parseWithDate() instead.
+    // Class attribute is more tricky since there are
+    // multiple classes on the parent - we have to explicitly
+    // check for class existance and assign
+    sh.removeClass("class_true")
+        .removeClass("class_false");
+    if (el.hasClass("class_true"))
+        sh.addClass("class_true");
+}
+``` 
 
-```javascript
-var obj = {
-    id: "141923asd1",
-    name: "rick",
-    entered: new Date(),
-    updated: new Date()
-};
-var json = JSON.stringify(obj);
+When you run this code you'll essentially see #shadow follow around the #notebox when dragged or moved, fade out when the #notebox fades. You'd also see the CSS class of #shadow changed every three seconds, in response to the change on #notebox.
 
-var obj2 = JSON.parse(json, JSON.dateParser);
+Note that the code above doesn't actually rely on the parameters passed into the `watchShadow` function, but instead does its own checks to see what needs updating. In fact this code simply updates all relevant properties whether they have changed or not. While less efficient it allows for simpler code and depending on how much change you need to do on the DOM, this can be very fast regardless. Your mileage may vary. If you have larger changes you need to affect, using the specific property to update the UI might be more appropriate.
 
-console.log(obj2.entered,obj2.updated);
-```
+## License ##
+The Westwind.QueueMessaging library is licensed under the MIT License and there's no charge to use, integrate or modify the code for this project. You are free to use it in personal, commercial, government and any other type of application.
 
-###JSON.dateStringToDate###
-dateStringToDate reliably provides JavaScript dates from JSON dates strings,
-plain strings in ISO or MS AJAX formats or dates. Useful when you are not
-converting JSON dates automatically and you need to be sure you always get
-consistent date values in code.
+Commercial Licenses are also available as an option. If you are using these tools in a commercial application please consider purchasing one of our reasonably priced commercial licenses that help support this project's development.
 
-All of the following should produce a date:
+All source code is copyright West Wind Technologies, regardless of changes made to them. Any source code modifications must leave the original copyright code headers intact.
 
-```javascript
-var date = new Date();
-var json = JSON.stringify(date);
+### Warranty Disclaimer: No Warranty! ###
 
-// JSON date
-var date2 = JSON.dateStringToDate(json);
-console.log(date2);  
-
-// string ISO date
-date2 = JSON.dateStringToDate("2014-01-01T13:13:34.441Z");
-console.log(date2);
-
-date2 = JSON.dateStringToDate("2014-01-01T13:13:34.441Z");
-console.log(date2);
-
-// real date - just echoed back
-date2 = JSON.dateStringToDate(new Date());
-console.log(date2);
-```
+IN NO EVENT SHALL THE AUTHOR, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THIS PROGRAM AND DOCUMENTATION, BE LIABLE FOR ANY COMMERCIAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR LOSSES SUSTAINED BY THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS, EVEN IF YOU OR OTHER PARTIES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
