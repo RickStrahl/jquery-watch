@@ -7,7 +7,7 @@ You can specify an element and any number of CSS properties or attribute names y
 
 ### Related Resources ##
 
-* **[Blog Post about jquery-watch](http://weblog.west-wind.com/)**
+* **[Blog Post about jquery-watch](http://weblog.west-wind.com/posts/2014/Oct/20/A-jquerywatch-Plugin-for-watching-CSS-styles-and-Attributes)**
 * **[Online Sample](http://samples.west-wind.com/jquery-watch/)**
 
 ## Usage ##

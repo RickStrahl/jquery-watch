@@ -116,26 +116,25 @@
     </div>
 
     <div class="container">
-        <div class="container">
-            <div id="notebox" class="notebox">
-                <p>
-                    This is the master window. Go ahead drag me around and close me!
-                </p>
-                <p>
-                    The shadow window should follow me around and close/fade when I do.
-                </p>
-                <p>
-                    There's also a timer, that fires and alternates a CSS class every
-                    3 seconds.
-                </p>
-            </div>
 
-            <div id="shadow" class="shadow">
-                <p>I'm the Shadow Window!</p>
-                <p>I'm shadowing the Master Window.</p>
-                <p>I'm a copy cat</p>
-                <p>I do as I'm told.</p>
-            </div>
+        <div id="notebox" class="notebox">
+            <p>
+                This is the master window. Go ahead drag me around and close me!
+            </p>
+            <p>
+                The shadow window should follow me around and close/fade when I do.
+            </p>
+            <p>
+                There's also a timer, that fires and alternates a CSS class every
+                3 seconds.
+            </p>
+        </div>
+
+        <div id="shadow" class="shadow">
+            <p>I'm the Shadow Window!</p>
+            <p>I'm shadowing the Master Window.</p>
+            <p>I'm a copy cat</p>
+            <p>I do as I'm told.</p>
         </div>
 
     </div>
@@ -173,7 +172,7 @@
         // this is the handler function that responds
         // to the events. Passes in:
         // data.props[], data.vals[] and an index for active item
-        function watchShadow(data, i) {            
+        function watchShadow(data, i) {
 
             // you can capture which attribute has changed
             var propChanged = data.props[i];

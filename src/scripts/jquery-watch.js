@@ -8,8 +8,8 @@ www.west-wind.com
 Licensed under MIT License
 http://en.wikipedia.org/wiki/MIT_License
 */
-(function($, undefined) {
-    $.fn.watch = function(options) {
+(function ($, undefined) {
+    $.fn.watch = function (options) {
         /// <summary>
         /// Allows you to monitor changes in a specific
         /// CSS property of an element by polling the value.
@@ -45,10 +45,10 @@ http://en.wikipedia.org/wiki/MIT_License
             callback: null
         }, options);
 
-        return this.each(function() {
+        return this.each(function () {
             var el = this;
             var el$ = $(this);
-            var fnc = function (mRec, mObs) {                
+            var fnc = function (mRec, mObs) {
                 __watcher.call(el, opt.id);
             };
 
@@ -63,7 +63,7 @@ http://en.wikipedia.org/wiki/MIT_License
                 intervalId: null
             };
             // store initial props and values
-            $.each(data.props, function(i) { data.vals[i] = el$.css(data.props[i]); });
+            $.each(data.props, function (i) { data.vals[i] = el$.css(data.props[i]); });
 
             el$.data(opt.id, data);
 
@@ -71,7 +71,7 @@ http://en.wikipedia.org/wiki/MIT_License
         });
 
         function hookChange(element$, id, data) {
-            element$.each(function() {
+            element$.each(function () {
                 var el$ = $(this);
 
                 if (window.MutationObserver) {
@@ -91,7 +91,7 @@ http://en.wikipedia.org/wiki/MIT_License
             });
         }
 
-        function __watcher(id) {            
+        function __watcher(id) {
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
@@ -99,9 +99,6 @@ http://en.wikipedia.org/wiki/MIT_License
 
             if (!w.func)
                 return;
-
-            // unbind to avoid recursion
-            el$.unwatch(id);
 
             var changed = false;
             var i = 0;
@@ -122,16 +119,21 @@ http://en.wikipedia.org/wiki/MIT_License
                     changed = true;
                     break;
                 }
-            }            
-            if (changed)
+            }
+            if (changed) {
+                // unbind to avoid recursive events
+                el$.unwatch(id);
+
+                // call the user handler
                 w.func.call(el, w, i);
 
-            // rebind event
-            hookChange(el$, id, w);
+                // rebind the events
+                hookChange(el$, id, w);
+            }
         }
     }
-    $.fn.unwatch = function(id) {
-        this.each(function() {
+    $.fn.unwatch = function (id) {
+        this.each(function () {
             var el = $(this);
             var data = el.data(id);
             try {
@@ -150,7 +152,7 @@ http://en.wikipedia.org/wiki/MIT_License
         });
         return this;
     }
-    String.prototype.startsWith = function(sub) {
+    String.prototype.startsWith = function (sub) {
         if (this.length == 0) return false;
         return sub == this.substr(0, sub.length);
     }
