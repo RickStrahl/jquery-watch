@@ -122,8 +122,7 @@ http://en.wikipedia.org/wiki/MIT_License
                     changed = true;
                     break;
                 }
-            }
-            console.log('__watcher ' + changed,w.func);
+            }            
             if (changed)
                 w.func.call(el, w, i);
 

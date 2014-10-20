@@ -1,15 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>jquery-watch Sample</title>    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" />
+
+    <title>jquery-watch Sample</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <style>
-        .notebox,.shadow {            
-            top: 310px;
+        .notebox, .shadow {
+            top: 250px;
             left: 40px;
             width: 270px;
             height: 200px;
@@ -21,192 +22,213 @@
             text-align: center;
             background-color: lightsteelblue;
         }
+
         .shadow {
-            left: 345px;            
+            left: 345px;
             background-color: silver;
             z-index: 19;
-            position: absolute;            
+            position: absolute;
         }
+
         .class_true {
-             background: steelblue !important;
-             color: white;
-         }
+            background: steelblue !important;
+            color: white;
+        }
 
         .class_false {
             background: burlywood !important;
             color: black;
         }
+
         .descriptionheader {
-            padding: 20px;
+            padding: 10px 15px;
             background: #d8e3f2;
+            font-size: 82.5%;
         }
+
+        .closebox {
+            position: absolute;
+            border-radius: 25px;
+            right: -5px;
+            top: -8px;
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            line-height: 1;
+            font-weight: bold;
+            font-size: 17pt;
+            color: white;
+            border: 2px solid white;
+            background: #535353;
+            box-shadow: 2px 2px 5px #535353;
+        }
+
+            .closebox:after {
+                content: "\00d7";
+            }
     </style>
 
 </head>
 <body>
-    <form id="form1">
-        <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="http://github.com/rickstrahl/jquery-watch" style="font-size: 1.5em"><i class="fa fa-eye"></i> jquery-watch</a>
-                </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="http://github.com/rickstrahl/jquery-watch"><i class="fa fa-github"></i> GitHub</a></li>
-                        <li><a id="lnkRedisplayWindow" href="javascript:{}"><i class="fa fa-close"></i> Show/Hide Window</a></li>
-                        <li><a href=""><i class="fa fa-refresh"></i> Refresh Page</a></li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand"
+                   href="http://github.com/rickstrahl/jquery-watch"
+                   style="font-size: 1.5em">
+                    <i class="fa fa-eye"></i> jquery-watch
+                </a>
             </div>
-        </nav>
 
-        <aside class="descriptionheader">
-            This sample demonstrates capturing CSS and Attribute changes and firing events in
-            response to the changes. You can drag around the left window and the right window
-            should follow and also follow the opacity setting. Every 3 seconds the class is
-            changed on the master and the slave window will also change its class.
-        </aside>
-
-        <div id="AlertBox" class="alert alert-warning" style="display:none;margin-top:none; border-radius:0">
-            <i class="fa fa-info"></i>&nbsp;&nbsp;
-            <b>Watch Events Fired:</b>
-            <span id="msg"></span>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="http://github.com/rickstrahl/jquery-watch"><i class="fa fa-github"></i> GitHub</a></li>
+                    <li><a id="lnkRedisplayWindow" href="javascript:{}"><i class="fa fa-close"></i> Show/Hide Window</a></li>
+                    <li><a href=""><i class="fa fa-refresh"></i> Refresh Page</a></li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
+    <aside class="descriptionheader">
+        This sample demonstrates capturing CSS and Attribute changes and firing events in
+        response to the changes. You can drag around the left window and the right window
+        should follow and also follow the opacity setting. Every 3 seconds the class is
+        changed on the master and the slave window will also change its class.
+    </aside>
+
+    <div id="AlertBox" class="alert alert-warning" style="display:none;margin-top:none; border-radius:0">
+        <i class="fa fa-info"></i>&nbsp;&nbsp;
+        <b>Watch Events Fired:</b>
+        <span id="msg"></span>
+    </div>
+
+    <div class="container">
         <div class="container">
-
-            <div class="container">
-                <div id="notebox" class="notebox">
-                    <p>
-                        This is the master window. Go ahead drag me around and close me!
-                    </p>
-                    <p>
-                        The shadow window should follow me around and close/fade when I do.
-                    </p>
-                    <p>
-                        There's also a timer, that fires and alternates a CSS class every
-                        3 seconds.
-                    </p>
-                </div>
-
-                <div id="shadow" class="shadow">
-                    <p>I'm the Shadow Window!</p>
-                    <p>I'm shadowing the Master Window.</p>
-                    <p>I'm a copy cat</p>
-                    <p>I do as I'm told.</p>
-                </div>
+            <div id="notebox" class="notebox">
+                <p>
+                    This is the master window. Go ahead drag me around and close me!
+                </p>
+                <p>
+                    The shadow window should follow me around and close/fade when I do.
+                </p>
+                <p>
+                    There's also a timer, that fires and alternates a CSS class every
+                    3 seconds.
+                </p>
             </div>
 
+            <div id="shadow" class="shadow">
+                <p>I'm the Shadow Window!</p>
+                <p>I'm shadowing the Master Window.</p>
+                <p>I'm a copy cat</p>
+                <p>I do as I'm told.</p>
+            </div>
         </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script type="text/javascript">
-            if (typeof (jQuery) == 'undefined')
-                document.write(unescape("%3Cscript src='scripts/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-        <!-- just for the samples for draggable -->
-        <script src="scripts/ww.jquery.min.js" type="text/javascript"></script>
 
-        <script src="scripts/jquery-watch.js"></script>
-        <script>
-            var el = $("#notebox");
-            el.draggable();
 
-            // Update a CSS Class on a 3 sec timer
-            var state = false;
-            setInterval(function () {
-                $("#notebox")
-                    .removeClass("class_true")
-                    .removeClass("class_false")
-                    .addClass("class_" + state);
-                state = !state; 
-            }, 3000);
+    <!-- just for the samples for draggable -->
+    <script src="scripts/ww.jquery.min.js" type="text/javascript"></script>
 
-            // Hook up CSS and Class watch operation
-            el.watch({
-                properties: "top,left,opacity,attr_class",
-                callback: watchShadow
+    <script src="scripts/jquery-watch.js"></script>
+    <script>
+        var el = $("#notebox");
+        el.draggable().closable();
+
+        // Update a CSS Class on a 3 sec timer
+        var state = false;
+        setInterval(function () {
+            $("#notebox")
+                .removeClass("class_true")
+                .removeClass("class_false")
+                .addClass("class_" + state);
+            state = !state;
+        }, 3000);
+
+        // Hook up CSS and Class watch operation
+        el.watch({
+            properties: "top,left,opacity,display,attr_class",
+            callback: watchShadow
+        });
+
+        var counter = 0;
+
+        // this is the handler function that responds
+        // to the events. Passes in:
+        // data.props[], data.vals[] and an index for active item
+        function watchShadow(data, i) {            
+
+            // you can capture which attribute has changed
+            var propChanged = data.props[i];
+            var valChanged = data.vals[i];
+
+            counter++;
+            showStatus(" Changed Property: " + propChanged +
+                "  -  New Value: " + valChanged +
+                " - Event Count:" + counter);
+
+            // element affected is 'this'
+            var el = $(this);
+            var sh = $("#shadow");
+
+            // get master current position
+            var pos = el.position();
+            var w = el.outerWidth();
+            var h = el.outerHeight();
+
+            // and update shadow accordingly
+            sh.css({
+                width: w,
+                height: h,
+                left: pos.left + w + 4,
+                top: pos.top,
+                display: el.css("display"),
+                opacity: el.css("opacity")
             });
 
-            var counter = 0;
+            // Class attribute is more tricky since there are
+            // multiple classes on the parent - we have to explicitly
+            // check for class existance and assign
+            sh.removeClass("class_true")
+                .removeClass("class_false");
+            if (el.hasClass("class_true"))
+                sh.addClass("class_true");
+        }
 
-            // this is the handler function that responds
-            // to the events. Passes in:
-            // data.props[], data.vals[] and an index for active item
-            function watchShadow(data, i) {
-                console.log('called');
-
-                // you can capture which attribute has changed
-                var propChanged = data.props[i];
-                var valChanged = data.vals[i];
-
-                counter++;
-                showStatus(" Changed Property: " + propChanged +
-                    "  -  New Value: " + valChanged +
-                    " - Event Count:" + counter);
-
-                // element affected is 'this'
-                var el = $(this);
-                var sh = $("#shadow");
-
-                // get master current position
-                var pos = el.position();
-                var w = el.outerWidth();
-                var h = el.outerHeight();
-
-                // and update shadow accordingly
-                sh.css({
-                    width: w,
-                    height: h,
-                    left: pos.left + w + 4,
-                    top: pos.top,
-                    display: el.css("display"),
-                    opacity: el.css("opacity")
-                });
-
-                // Class attribute is more tricky since there are
-                // multiple classes on the parent - we have to explicitly
-                // check for class existance and assign
-                sh.removeClass("class_true")
-                    .removeClass("class_false");
-                if (el.hasClass("class_true"))
-                    sh.addClass("class_true");
+        function showStatus(msg) {
+            if (!msg) {
+                $("#AlertBox").hide();
+                return;
             }
+            $("#msg").text(msg);
+            $("#AlertBox").show();
+        }
 
-            function showStatus(msg) {
-                if (!msg) {
-                    $("#AlertBox").hide();
-                    return;
-                }
-                $("#msg").text(msg);
-                $("#AlertBox").show();
-            }
+        $("#lnkRedisplayWindow").click(function () {
+            var el$ = $("#notebox");
 
-            $("#lnkRedisplayWindow").click(function () {
-                var el$ = $("#notebox");
-
-                if (el$.is(":visible"))
-                    el$.fadeOut(1000);
-                else
-                    el$.fadeIn(1000);
-            });
-
-
-
-
-        </script>
-    </form>
-
+            if (el$.is(":visible"))
+                el$.fadeOut(1000);
+            else
+                el$.fadeIn(1000);
+        });
+    </script>
 </body>
 </html>

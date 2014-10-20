@@ -539,8 +539,7 @@ http://en.wikipedia.org/wiki/MIT_License
         return this.each(function () {
             var $el = $(this);
             $el.css("max-height", "0");
-            $el.addClass(opt.cssHiddenClass);
-            console.log('up', $el);
+            $el.addClass(opt.cssHiddenClass);            
         });
     };
 
@@ -603,8 +602,7 @@ http://en.wikipedia.org/wiki/MIT_License
 
         if (opt.autoResize == true) {
             $els = this;
-            $(opt.container).resize(function () {
-                console.log(opt.container);
+            $(opt.container).resize(function () {                
                 $els.stretchToBottom({ container: opt.container, autoResize: false });
             });
         }
