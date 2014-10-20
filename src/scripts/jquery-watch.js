@@ -54,8 +54,8 @@ http://en.wikipedia.org/wiki/MIT_License
 
             var data = {
                 id: opt.id,
-                props: opt.properties.split(","),
-                vals: [opt.properties.split(",").length],
+                props: opt.properties.split(','),
+                vals: [opt.properties.split(',').length],
                 func: opt.callback, // user function
                 fnc: fnc, // __watcher internal
                 origProps: opt.properties,
@@ -63,7 +63,12 @@ http://en.wikipedia.org/wiki/MIT_License
                 intervalId: null
             };
             // store initial props and values
-            $.each(data.props, function (i) { data.vals[i] = el$.css(data.props[i]); });
+            $.each(data.props, function(i) {
+                if (data.props[i].startsWith('attr_'))
+                    data.vals[i] = el$.attr(data.props[i].replace('attr_',''));
+                else
+                    data.vals[i] = el$.css(data.props[i]);
+            });
 
             el$.data(opt.id, data);
 
@@ -75,10 +80,10 @@ http://en.wikipedia.org/wiki/MIT_License
                 var el$ = $(this);
 
                 if (window.MutationObserver) {
-                    var observer = el$.data("__watcherObserver");
+                    var observer = el$.data('__watcherObserver');
                     if (observer == null) {
                         observer = new MutationObserver(data.fnc);
-                        el$.data("__watcherObserver", observer);
+                        el$.data('__watcherObserver', observer);
                     }
                     observer.observe(this, {
                         attributes: true,
