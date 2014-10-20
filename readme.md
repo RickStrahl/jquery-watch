@@ -1,10 +1,14 @@
-
 # jquery-watch 
 #### A jQuery plug-in to notify you of CSS or Attribute changes in an element ####
 
-This small jQuery plug-in allows you to monitor changes to any DOM element's CSS classes or attributes and fire a callback in response to any change in the monitored styles or attributes. 
+This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles or attributes and fire a callback in response to any change in the monitored styles or attributes. 
 
 You can specify an element and any number of CSS properties or attribute names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives a object with an array of property names and current values, plus an index for the one that triggered the change.
+
+### Related Resources ##
+
+* **[Blog Post about jquery-watch](http://weblog.west-wind.com/)**
+* **[Online Sample](http://samples.west-wind.com/jquery-watch/)**
 
 ## Usage ##
 To use the plugin add a reference to jQuery and a reference to this plugin to your page:
@@ -191,10 +195,16 @@ When you run this code you'll essentially see #shadow follow around the #notebox
 
 Note that the code above doesn't actually rely on the parameters passed into the `watchShadow` function, but instead does its own checks to see what needs updating. In fact this code simply updates all relevant properties whether they have changed or not. While less efficient it allows for simpler code and depending on how much change you need to do on the DOM, this can be very fast regardless. Your mileage may vary. If you have larger changes you need to affect, using the specific property to update the UI might be more appropriate.
 
-## License ##
-The Westwind.QueueMessaging library is licensed under the MIT License and there's no charge to use, integrate or modify the code for this project. You are free to use it in personal, commercial, government and any other type of application.
+## Browser Support ##
+This plug-in will work with just about any browser, as it has a fallback for legacy browsers using interval polling. Modern browsers use an efficient API to get notified of changes by the browser.
 
-Commercial Licenses are also available as an option. If you are using these tools in a commercial application please consider purchasing one of our reasonably priced commercial licenses that help support this project's development.
+This plug-in relies on the `MutationObserver` API in modern browsers to detect change events on elements. This API is supported in all current versions of Chrome, Mozilla, Safari, Safari iOS, and Internet Explorer 11. 
+
+Older versions of IE (10 and older) and any old browser that doesn't support `MutationObserver` can still work by using an inefficient `setInterval()` polling mechanism. It works, but there's always a slight, configurable delay between events being detected and the callback executing. However this fallback should work in any browser and so provides backwards compatibility. You can adjust the polling delay (default is 10ms), but you'll want to be careful to not poll too frequently to avoid slowing down browser operation especially on slower/older devices/machines.
+
+
+## License ##
+Licensed under the MIT License. There's no charge to use, integrate or modify the code for this project. You are free to use it in personal, commercial, government and any other type of application.
 
 All source code is copyright West Wind Technologies, regardless of changes made to them. Any source code modifications must leave the original copyright code headers intact.
 

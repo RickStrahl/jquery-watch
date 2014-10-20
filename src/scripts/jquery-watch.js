@@ -48,7 +48,7 @@ http://en.wikipedia.org/wiki/MIT_License
         return this.each(function() {
             var el = this;
             var el$ = $(this);
-            var fnc = function(mRec, mObs) {                
+            var fnc = function (mRec, mObs) {                
                 __watcher.call(el, opt.id);
             };
 
@@ -91,7 +91,7 @@ http://en.wikipedia.org/wiki/MIT_License
             });
         }
 
-        function __watcher(id) {
+        function __watcher(id) {            
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
@@ -123,6 +123,7 @@ http://en.wikipedia.org/wiki/MIT_License
                     break;
                 }
             }
+            console.log('__watcher ' + changed,w.func);
             if (changed)
                 w.func.call(el, w, i);
 
