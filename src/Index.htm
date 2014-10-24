@@ -172,7 +172,10 @@
         // this is the handler function that responds
         // to the events. Passes in:
         // data.props[], data.vals[] and an index for active item
-        function watchShadow(data, i) {
+        function watchShadow(data, i, mRec, mObs) {
+
+            // you can optionally look at the MutationRecord and Observer instances
+            //console.log(mRec, mObs);
 
             // you can capture which attribute has changed
             var propChanged = data.props[i];

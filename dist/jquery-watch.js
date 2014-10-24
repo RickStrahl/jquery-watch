@@ -1,7 +1,7 @@
 ﻿/// <reference path="jquery.js" />
 /*
 jquery-watcher 
-Version 1.1 - 10/20/2014
+Version 1.11 - 10/27/2014
 (c) 2014 Rick Strahl, West Wind Technologies 
 www.west-wind.com
 
@@ -49,7 +49,7 @@ http://en.wikipedia.org/wiki/MIT_License
             var el = this;
             var el$ = $(this);
             var fnc = function (mRec, mObs) {
-                __watcher.call(el, opt.id);
+                __watcher.call(el, opt.id, mRec, mObs);
             };
 
             var data = {
@@ -96,7 +96,7 @@ http://en.wikipedia.org/wiki/MIT_License
             });
         }
 
-        function __watcher(id) {
+        function __watcher(id,mRec,mObs) {
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
@@ -130,7 +130,7 @@ http://en.wikipedia.org/wiki/MIT_License
                 el$.unwatch(id);
 
                 // call the user handler
-                w.func.call(el, w, i);
+                w.func.call(el, w, i, mRec, mObs);
 
                 // rebind the events
                 hookChange(el$, id, w);
@@ -158,7 +158,7 @@ http://en.wikipedia.org/wiki/MIT_License
         return this;
     }
     String.prototype.startsWith = function (sub) {
-        if (this.length == 0) return false;
+        if (sub === null || sub === undefined) return false;        
         return sub == this.substr(0, sub.length);
     }
 })(jQuery, undefined);
