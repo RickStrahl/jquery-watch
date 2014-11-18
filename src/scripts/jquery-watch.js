@@ -1,14 +1,14 @@
 ﻿/// <reference path="jquery.js" />
 /*
 jquery-watcher 
-Version 1.11 - 10/27/2014
+Version 1.13 - 11/17/2014
 (c) 2014 Rick Strahl, West Wind Technologies 
 www.west-wind.com
 
 Licensed under MIT License
 http://en.wikipedia.org/wiki/MIT_License
 */
-(function ($, undefined) {
+(function ($, undefined ) {
     $.fn.watch = function (options) {
         /// <summary>
         /// Allows you to monitor changes in a specific
@@ -92,7 +92,7 @@ http://en.wikipedia.org/wiki/MIT_License
                         characterData: true
                     });
                 } else
-                    data.intervalId = setInterval(data.fnc, interval);
+                    data.intervalId = setInterval(data.fnc, opt.interval);
             });
         }
 
