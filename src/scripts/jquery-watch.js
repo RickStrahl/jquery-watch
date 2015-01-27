@@ -124,21 +124,22 @@ http://en.wikipedia.org/wiki/MIT_License
                     continue;
 
                 if (w.vals[i] != newVal) {
-                    w.vals[i] = newVal;
-                    changed = true;
-                    break;
-                }
-            }
-            if (changed) {
-                // unbind to avoid recursive events
-                el$.unwatch(id);
+					w.vals[i] = newVal;
+					
+					if (!changed) {
+						// first time a change is detected, unbind to avoid recursive events
+						el$.unwatch(id);
+					}
+					changed = true;
 
-                // call the user handler
-                w.func.call(el, w, i, mRec, mObs);
-
-                // rebind the events
-                hookChange(el$, id, w);
+					// call the user handler
+					w.func.call(el, w, i, mRec, mObs);
+				}
             }
+			if (changed) {
+				// rebind the events
+				hookChange(el$, id, w);
+			}
         }
     }
     $.fn.unwatch = function (id) {
