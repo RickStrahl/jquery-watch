@@ -66,6 +66,8 @@ http://en.wikipedia.org/wiki/MIT_License
             $.each(data.props, function(i) {
                 if (data.props[i].startsWith('attr_'))
                     data.vals[i] = el$.attr(data.props[i].replace('attr_',''));
+                else if (data.props[i].startsWith('prop_'))
+                    data.vals[i] = el$.prop(data.props[i].replace('prop_',''));
                 else
                     data.vals[i] = el$.css(data.props[i]);
             });
@@ -113,6 +115,8 @@ http://en.wikipedia.org/wiki/MIT_License
                 var newVal = "";
                 if (key.startsWith('attr_'))
                     newVal = el$.attr(key.replace('attr_', ''));
+                else if (key.startsWith('prop_'))
+                    newVal = el$.prop(key.replace('prop_', ''));
                 else
                     newVal = el$.css(key);
 
@@ -120,21 +124,22 @@ http://en.wikipedia.org/wiki/MIT_License
                     continue;
 
                 if (w.vals[i] != newVal) {
-                    w.vals[i] = newVal;
-                    changed = true;
-                    break;
-                }
-            }
-            if (changed) {
-                // unbind to avoid recursive events
-                el$.unwatch(id);
+					w.vals[i] = newVal;
+					
+					if (!changed) {
+						// first time a change is detected, unbind to avoid recursive events
+						el$.unwatch(id);
+					}
+					changed = true;
 
-                // call the user handler
-                w.func.call(el, w, i, mRec, mObs);
-
-                // rebind the events
-                hookChange(el$, id, w);
+					// call the user handler
+					w.func.call(el, w, i, mRec, mObs);
+				}
             }
+			if (changed) {
+				// rebind the events
+				hookChange(el$, id, w);
+			}
         }
     }
     $.fn.unwatch = function (id) {
