@@ -66,6 +66,8 @@ http://en.wikipedia.org/wiki/MIT_License
             $.each(data.props, function(i) {
                 if (data.props[i].startsWith('attr_'))
                     data.vals[i] = el$.attr(data.props[i].replace('attr_',''));
+                else if (data.props[i].startsWith('prop_'))
+                    data.vals[i] = el$.prop(data.props[i].replace('prop_',''));
                 else
                     data.vals[i] = el$.css(data.props[i]);
             });
@@ -113,6 +115,8 @@ http://en.wikipedia.org/wiki/MIT_License
                 var newVal = "";
                 if (key.startsWith('attr_'))
                     newVal = el$.attr(key.replace('attr_', ''));
+                else if (key.startsWith('prop_'))
+                    newVal = el$.prop(key.replace('prop_', ''));
                 else
                     newVal = el$.css(key);
 
