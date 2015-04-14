@@ -13,9 +13,9 @@ You can specify an element and any number of CSS properties attribute or propert
 ## Installation
 To install jquery-watch either copy the jquery-watch scripts out of the root folder of this repository, or use Bower to install it into your project:
 
-    $ Bower Install jquery-watcher
+    $ Bower install jquery-watch-dom
 
-Note the differing name (jquery-watcher rather than jquery-watch) due to a naming conflict with an existing bower package. 
+Note the differing name (jquery-watch-dom rather than jquery-watch) due to a naming conflict with an existing bower package. 
 
 ## Usage
 To use the plugin add a reference to jQuery and a reference to this plugin to your page:

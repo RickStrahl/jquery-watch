@@ -1,5 +1,5 @@
 {
-  "name": "jquery-watcher",
+  "name": "jquery-watch-dom",
   "version": "1.15.0",
   "main": "jquery-watch.js",
   "license": "MIT",
