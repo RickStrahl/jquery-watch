@@ -10,7 +10,12 @@ You can specify an element and any number of CSS properties or attribute names y
 * **[Blog Post about jquery-watch](http://weblog.west-wind.com/posts/2014/Oct/20/A-jquerywatch-Plugin-for-watching-CSS-styles-and-Attributes)**
 * **[Online Sample](http://samples.west-wind.com/jquery-watch/)**
 
-## Usage ##
+## Installation
+To install jquery-watch either copy the jquery-watch scripts out of the root folder of this repository, or use Bower to install it into your project:
+
+    $ Bower Install jquery-watch 
+
+## Usage
 To use the plugin add a reference to jQuery and a reference to this plugin to your page:
 
 ```html
