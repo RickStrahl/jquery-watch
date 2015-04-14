@@ -1,7 +1,7 @@
 {
-  "name": "jquery-watch",
-  "version": "1.15",
-  "main": "jquery.watch",
+  "name": "jquery-watcher",
+  "version": "1.15.0",
+  "main": "jquery-watch.js",
   "license": "MIT",
   "ignore": [
     "*.sln",
@@ -12,5 +12,5 @@
     "json",
     "date"    
   ],
-  "homepage": "https://github.com/RickStrahl/json.date-extensions"  
+  "homepage": "https://github.com/RickStrahl/jquery-watch"  
 }

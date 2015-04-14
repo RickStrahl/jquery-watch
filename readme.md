@@ -1,11 +1,11 @@
 # jquery-watch 
-#### A jQuery plug-in to notify you of CSS or Attribute changes in an element ####
+#### A jQuery plug-in to notify you of CSS, Attribute or Property changes in an element 
 
-This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles or attributes and fire a callback in response to any change in the monitored styles or attributes.
+This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or property and fires a callback in response to any change in the monitored styles or attributes.
 
-You can specify an element and any number of CSS properties or attribute names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives a object with an array of property names and current values, plus an index for the one that triggered the change.
+You can specify an element and any number of CSS properties attribute or property names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives an object with an array of property names and current values, plus an index for the one that triggered the change.
 
-### Related Resources ##
+### Related Resources
 
 * **[Blog Post about jquery-watch](http://weblog.west-wind.com/posts/2014/Oct/20/A-jquerywatch-Plugin-for-watching-CSS-styles-and-Attributes)**
 * **[Online Sample](http://samples.west-wind.com/jquery-watch/)**
@@ -13,7 +13,9 @@ You can specify an element and any number of CSS properties or attribute names y
 ## Installation
 To install jquery-watch either copy the jquery-watch scripts out of the root folder of this repository, or use Bower to install it into your project:
 
-    $ Bower Install jquery-watch 
+    $ Bower Install jquery-watcher
+
+Note the differing name (jquery-watcher rather than jquery-watch) due to a naming conflict with an existing bower package. 
 
 ## Usage
 To use the plugin add a reference to jQuery and a reference to this plugin to your page:
@@ -51,6 +53,36 @@ You simply specify the CSS styles or attributes to monitor and then hook up a ca
 
 Note that you can get quite a lot of notifications especially if you're monitoring things like opacity during a fade operation or top/left during drag operations, so you should keep the code in this function to a minimum.
 
+### Watching Property and Content Changes
+You can also monitor property changes by watching any direct properties that are associated with a given jQuery DOM element set.
+
+For example assume you have a button that changes some text in a DOM element:
+
+```html
+<button id="btnChangeContent">Change Content</button>
+<div id="SomeContent">Some Content that can change.</div>
+```
+
+To capture the programmatic change you can now use the following code:
+
+```javascript
+$("#btnChangeContent").click(function () {
+    // assign text programmatically
+    $("#SomeContent").text("Hello - time is " + new Date());
+});
+// watch the content
+$("#SomeContent").watch({
+    properties: "prop_innerHTML",
+    watchChildren: true,
+    callback: function (data, i) {
+        console.log("text changed");
+        alert('text changed' + data.vals[i]);
+    }
+});
+```
+
+Whenever you click the button and the text is changed an alert box pops up from the watcher notification.
+
 ## Syntax ##
 The syntax uses standard jQuery plug-in behavior attached to an element selector:
 
@@ -64,7 +96,7 @@ where options looks like this:
 var options = {
     // CSS styles or Attributes to monitor as comma delimited list
     // For attributes use a attr_ prefix
-    // Example: "top,left,opacity,attr_class"
+    // Example: "top,left,opacity,attr_class,prop_innerHTML"
     properties: null,
 
     // interval for 'manual polling' (IE 10 and older)            

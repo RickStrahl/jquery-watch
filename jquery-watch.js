@@ -13,8 +13,10 @@ http://en.wikipedia.org/wiki/MIT_License
         /// <summary>
         /// Allows you to monitor changes in a specific
         /// CSS property of an element by polling the value.
+        /// You can also monitor attributes (using attr_ prefix)
+        /// or property changes (using prop_ prefix).
         /// when the value changes a function is called.
-        /// The function called is called in the context
+        /// The callback is fired in the context
         /// of the selected element (ie. this)
         ///
         /// Uses the MutationObserver API of the DOM and
@@ -48,7 +50,7 @@ http://en.wikipedia.org/wiki/MIT_License
         return this.each(function () {
             var el = this;
             var el$ = $(this);
-            var fnc = function (mRec, mObs) {
+            var fnc = function (mRec, mObs) {                
                 __watcher.call(el, opt.id, mRec, mObs);
             };
 
@@ -63,11 +65,14 @@ http://en.wikipedia.org/wiki/MIT_License
                 intervalId: null
             };
             // store initial props and values
-            $.each(data.props, function(i) {
+            $.each(data.props, function (i) {
+                var propName = data.props[i];
                 if (data.props[i].startsWith('attr_'))
-                    data.vals[i] = el$.attr(data.props[i].replace('attr_',''));
+                    data.vals[i] = el$.attr(propName.replace('attr_', ''));
+                else if(propName.startsWith('prop_'))
+                    data.vals[i] = el$.prop(propName.replace('props_', ''));
                 else
-                    data.vals[i] = el$.css(data.props[i]);
+                    data.vals[i] = el$.css(propName);
             });
 
             el$.data(opt.id, data);
@@ -96,7 +101,7 @@ http://en.wikipedia.org/wiki/MIT_License
             });
         }
 
-        function __watcher(id,mRec,mObs) {
+        function __watcher(id, mRec, mObs) {            
             var el$ = $(this);
             var w = el$.data(id);
             if (!w) return;
@@ -104,15 +109,18 @@ http://en.wikipedia.org/wiki/MIT_License
 
             if (!w.func)
                 return;
+            debugger;
 
             var changed = false;
             var i = 0;
             for (i; i < w.props.length; i++) {
                 var key = w.props[i];
-
+                
                 var newVal = "";
                 if (key.startsWith('attr_'))
                     newVal = el$.attr(key.replace('attr_', ''));
+                else if(key.startsWith('prop_'))
+                    newVal = el$.prop(key.replace('prop_', ''));
                 else
                     newVal = el$.css(key);
 
