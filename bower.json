@@ -1,6 +1,6 @@
 {
   "name": "jquery-watch",
-  "version": "1.15",
+  "version": "1.15.0",
   "main": "jquery.watch",
   "license": "MIT",
   "ignore": [
