@@ -113,7 +113,7 @@ var options = {
 }
 ```
 
-The main required property to set is `properties` which can contain any CSS Style property (top, left, opacity, display etc.) or an attribute name prefixed by `attr_` (attr_class,attr_readonly,attr_src etc.).  
+The main required property to set is `properties` which can contain any CSS Style property (top, left, opacity, display etc.), an attribute name prefixed by `attr_` (attr_class,attr_readonly,attr_src etc.) or a property name prefixed by `prop_' (prop_innerHTML, prop_value etc). `attr_` and `prop_` use jQuery's attr() and prop() functions respectively to check the relevant keys.
 
 The other required property is the `callback` property which lets you specify a callback function called when one (or more) of the properties change.  The callback function receives two parameters which is an instance of a data object that contains an array of the properties monitored and the latest values.
 
