@@ -1,7 +1,7 @@
 # jquery-watch 
 #### A jQuery plug-in to notify you of CSS, Attribute or Property changes in an element 
 
-This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or property and fires a callback in response to any change in the monitored styles or attributes.
+This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or properties and fires a callback in response to any change in the monitored styles or attributes.
 
 You can specify an element and any number of CSS properties attribute or property names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives an object with an array of property names and current values, plus an index for the one that triggered the change.
 
@@ -34,7 +34,7 @@ var el = $("#notebox");
 // hook up the watcher
 el.watch({
     // specify CSS styles or attribute names to monitor
-	properties: "top,left,opacity,attr_class",
+	properties: "top,left,opacity,attr_class,prop_innerHTML",
 
     // callback function when a change is detected
     callback: function(data, i) {
