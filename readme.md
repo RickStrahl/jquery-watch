@@ -239,7 +239,6 @@ This plug-in relies on the `MutationObserver` API in modern browsers to detect c
 
 Older versions of IE (10 and older) and any old browser that doesn't support `MutationObserver` can still work by using an inefficient `setInterval()` polling mechanism. It works, but there's always a slight, configurable delay between events being detected and the callback executing. However this fallback should work in any browser and so provides backwards compatibility. You can adjust the polling delay (default is 10ms), but you'll want to be careful to not poll too frequently to avoid slowing down browser operation especially on slower/older devices/machines.
 
-
 ## License ##
 Licensed under the MIT License. There's no charge to use, integrate or modify the code for this project. You are free to use it in personal, commercial, government and any other type of application.
 
@@ -248,3 +247,17 @@ All source code is copyright West Wind Technologies, regardless of changes made 
 ### Warranty Disclaimer: No Warranty! ###
 
 IN NO EVENT SHALL THE AUTHOR, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THIS PROGRAM AND DOCUMENTATION, BE LIABLE FOR ANY COMMERCIAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR LOSSES SUSTAINED BY THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS, EVEN IF YOU OR OTHER PARTIES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+## Change Log
+
+#### Version 1.16
+* **Make default Watcher ID a unique ID**<br/>
+Changed the default id assignment that the watcher attaches to a unique ID which allows for multiple watcher attachments to the same element by default. Previously it was your responsibility to create new unique Ids if multiple watchers are used. You can now receive multiple events firing when attaching watchers to the same element more than once.
+
+### Version 1.15
+* **Bug Fix: Options parameter passing**<br/>
+Fixed issue where the options.interval was not properly passed which caused problems for non-recent and IE-old browser that don't support MutationObservers.
+
+* **Add support for Property watches with _prop Prefix**<br/>
+You can now attach to property change values by prefixing a property name with `prop_`. So if you want to monitor a value change on an input box you can add `prop_value` or if you want to monitor the content of an element or container watch `prop_innerHTML`.

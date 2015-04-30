@@ -1,10 +1,9 @@
 ﻿/// <reference path="jquery.js" />
 /*
 jquery-watcher 
-Version 1.15 - 4/14/2015
+Version 1.16 - 4/29/2015
 © 2014-2015 Rick Strahl, West Wind Technologies 
 www.west-wind.com
-
 Licensed under MIT License
 http://en.wikipedia.org/wiki/MIT_License
 */
@@ -38,7 +37,7 @@ http://en.wikipedia.org/wiki/MIT_License
             interval: 100,
 
             // a unique id for this watcher instance
-            id: "_watcher",
+            id: "_watcher_" + new Date().getTime(),
 
             // flag to determine whether child elements are watched            
             watchChildren: false,
