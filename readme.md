@@ -1,7 +1,7 @@
 # jquery-watch 
 #### A jQuery plug-in to notify you of CSS, Attribute or Property changes in an element 
 
-This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or property and fires a callback in response to any change in the monitored styles or attributes.
+This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or properties and fires a callback in response to any change in the monitored styles or attributes.
 
 You can specify an element and any number of CSS properties attribute or property names you want to monitor and if any of them are changed you are notified of the change via a function delegate you provide. The function delegate receives an object with an array of property names and current values, plus an index for the one that triggered the change.
 
@@ -34,7 +34,7 @@ var el = $("#notebox");
 // hook up the watcher
 el.watch({
     // specify CSS styles or attribute names to monitor
-	properties: "top,left,opacity,attr_class",
+	properties: "top,left,opacity,attr_class,prop_innerHTML",
 
     // callback function when a change is detected
     callback: function(data, i) {
@@ -113,7 +113,7 @@ var options = {
 }
 ```
 
-The main required property to set is `properties` which can contain any CSS Style property (top, left, opacity, display etc.) or an attribute name prefixed by `attr_` (attr_class,attr_readonly,attr_src etc.).  
+The main required property to set is `properties` which can contain any CSS Style property (top, left, opacity, display etc.), an attribute name prefixed by `attr_` (attr_class,attr_readonly,attr_src etc.) or a property name prefixed by `prop_' (prop_innerHTML, prop_value etc). `attr_` and `prop_` use jQuery's attr() and prop() functions respectively to check the relevant keys.
 
 The other required property is the `callback` property which lets you specify a callback function called when one (or more) of the properties change.  The callback function receives two parameters which is an instance of a data object that contains an array of the properties monitored and the latest values.
 
@@ -247,7 +247,6 @@ All source code is copyright West Wind Technologies, regardless of changes made 
 ### Warranty Disclaimer: No Warranty! ###
 
 IN NO EVENT SHALL THE AUTHOR, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THIS PROGRAM AND DOCUMENTATION, BE LIABLE FOR ANY COMMERCIAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR LOSSES SUSTAINED BY THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS, EVEN IF YOU OR OTHER PARTIES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-
 
 ## Change Log
 
