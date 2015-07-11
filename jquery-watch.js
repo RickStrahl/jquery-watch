@@ -107,8 +107,7 @@ http://en.wikipedia.org/wiki/MIT_License
             var el = this;
 
             if (!w.func)
-                return;
-            debugger;
+                return;            
 
             var changed = false;
             var i = 0;
