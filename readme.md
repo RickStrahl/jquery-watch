@@ -11,17 +11,19 @@ You can specify an element and any number of CSS properties attribute or propert
 * **[Online Sample](http://samples.west-wind.com/jquery-watch/)**
 
 ## Installation
-To install jquery-watch either copy the jquery-watch scripts out of the root folder of this repository, or use Bower to install it into your project:
+To install jquery-watch either copy the jquery-watch scripts out of the root folder of this repository, or use Bower or NPM to install it into your project:
 
     $ Bower install jquery-watch-dom
 
-Note the differing name (jquery-watch-dom rather than jquery-watch) due to a naming conflict with an existing bower package. 
+Note the differing name (jquery-watch-dom rather than jquery-watch) for the Bower package due to a naming conflict with an existing bower package.
+
+	$ npm install jquery-watch 
 
 ## Usage
 To use the plugin add a reference to jQuery and a reference to this plugin to your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="scripts/jquery-watch.min.js"></script>
 ```
 
@@ -83,7 +85,7 @@ $("#SomeContent").watch({
 
 Whenever you click the button and the text is changed an alert box pops up from the watcher notification.
 
-## Syntax ##
+## Syntax
 The syntax uses standard jQuery plug-in behavior attached to an element selector:
 
 ```javascript
@@ -139,7 +141,7 @@ If you want to know which element caused the event to fire you can use the code 
 > Note that the change event tracking is turned off for the duration of the callback function execution to avoid recursive events firing causing a potential browser lockup. If you need to make changes that require updating the DOM that affect further change events, you should use `setTimeout()` to delay execution until after the callback has completed.
 
 
-## Example Usage ##
+## Example Usage
 As an example consider you have a couple of HTML elements - two boxes and you want to slave one box to the other:
 
 ```html
@@ -232,23 +234,30 @@ When you run this code you'll essentially see #shadow follow around the #notebox
 
 Note that the code above doesn't actually rely on the parameters passed into the `watchShadow` function, but instead does its own checks to see what needs updating. In fact this code simply updates all relevant properties whether they have changed or not. While less efficient it allows for simpler code and depending on how much change you need to do on the DOM, this can be very fast regardless. Your mileage may vary. If you have larger changes you need to affect, using the specific property to update the UI might be more appropriate.
 
-## Browser Support ##
+## Browser Support
 This plug-in will work with just about any browser, as it has a fallback for legacy browsers using interval polling. Modern browsers use an efficient API to get notified of changes by the browser.
 
 This plug-in relies on the `MutationObserver` API in modern browsers to detect change events on elements. This API is supported in all current versions of Chrome, Mozilla, Safari, Safari iOS, and Internet Explorer 11. 
 
 Older versions of IE (10 and older) and any old browser that doesn't support `MutationObserver` can still work by using an inefficient `setInterval()` polling mechanism. It works, but there's always a slight, configurable delay between events being detected and the callback executing. However this fallback should work in any browser and so provides backwards compatibility. You can adjust the polling delay (default is 10ms), but you'll want to be careful to not poll too frequently to avoid slowing down browser operation especially on slower/older devices/machines.
 
-## License ##
+## License
 Licensed under the MIT License. There's no charge to use, integrate or modify the code for this project. You are free to use it in personal, commercial, government and any other type of application.
 
 All source code is copyright West Wind Technologies, regardless of changes made to them. Any source code modifications must leave the original copyright code headers intact.
 
-### Warranty Disclaimer: No Warranty! ###
+### Warranty Disclaimer: No Warranty!
 
 IN NO EVENT SHALL THE AUTHOR, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THIS PROGRAM AND DOCUMENTATION, BE LIABLE FOR ANY COMMERCIAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM INCLUDING, BUT NOT LIMITED TO, LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR LOSSES SUSTAINED BY THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS, EVEN IF YOU OR OTHER PARTIES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
 ## Change Log
+
+#### Version 1.20
+* **Add NPM Install**  
+You can now install jquery-watch from NPM in addition to bower using `npm install jquery-watch`
+
+* **Allow for multiple watch handlers on a single DOM element**
+Fixed behavior to allow multiple watchers on a single DOM element by assigning a unique ID to the stored state for the watcher. This means multiple calls to `.watch()` can be made and all of them will trace their own properties and fire their own events.
 
 #### Version 1.16
 * **Make default Watcher ID a unique ID**<br/>

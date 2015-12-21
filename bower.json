@@ -5,12 +5,16 @@
   "license": "MIT",
   "ignore": [
     "*.sln",
-    ".*",    
-    "src"   
+    ".*",
+    "src",
+    "*.publishproj"
   ],
   "keywords": [
     "json",
-    "date"    
+    "date"
   ],
-  "homepage": "https://github.com/RickStrahl/jquery-watch"  
+  "homepage": "https://github.com/RickStrahl/jquery-watch",
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
 }

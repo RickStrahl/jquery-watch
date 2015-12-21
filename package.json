@@ -1,0 +1,28 @@
+{
+  "name": "jquery-watch",
+  "version": "1.16.0",
+  "description": "This small jQuery plug-in allows you to monitor changes to any DOM element's CSS styles, attributes or properties and fires a callback in response to any change in the monitored styles or attributes.",
+  "main": "jquery-watch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RickStrahl/jquery-watch"
+  },
+  "keywords": [
+    "monitor",
+    "DOM-events",
+    "change-events",
+    "jquery"
+  ],
+  "author": "Rick Strahl, West Wind Technologies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RickStrahl/jquery-watch/issues"
+  },
+  "homepage": "https://github.com/RickStrahl/jquery-watch",
+  "dependencies": {
+    "jquery": "^2.1.4"
+  }
+}
