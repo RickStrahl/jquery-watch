@@ -172,7 +172,6 @@ There are two boxes #notebox and #shadow and what we want to do is monitor chang
 The following code monitors #notebox so we can tell when a monitored value is changed:
 
 ```javascript
-<script>
 var el = $("#notebox");
 el.draggable();
 
@@ -233,6 +232,26 @@ function watchShadow(data, i) {
 When you run this code you'll essentially see #shadow follow around the #notebox when dragged or moved, fade out when the #notebox fades. You'd also see the CSS class of #shadow changed every three seconds, in response to the change on #notebox.
 
 Note that the code above doesn't actually rely on the parameters passed into the `watchShadow` function, but instead does its own checks to see what needs updating. In fact this code simply updates all relevant properties whether they have changed or not. While less efficient it allows for simpler code and depending on how much change you need to do on the DOM, this can be very fast regardless. Your mileage may vary. If you have larger changes you need to affect, using the specific property to update the UI might be more appropriate.
+
+### Watching Child Elements
+You can also monitor changes to child nodes by setting `.watchChildren` to `true` and then looking at the mutation record to figure out if nodes have been removed or added:
+
+```javascript
+$list.watch({
+        properties: 'prop_innerHTML',
+        watchChildren: true,
+        callback: function (data, i, mutations) {
+
+            mutations.forEach(function(record) {
+                if (record.type === 'childList' && record.removedNodes.length > 0) {
+                    console.info('removed item');        
+                } else if (record.addedNodes.length > 0) {
+                    console.info('added item');
+                }
+            });
+        }
+    });
+```    
 
 ## Browser Support
 This plug-in will work with just about any browser, as it has a fallback for legacy browsers using interval polling. Modern browsers use an efficient API to get notified of changes by the browser.

@@ -1,8 +1,8 @@
 ﻿/// <reference path="jquery.js" />
 /*
 jquery-watcher 
-Version 1.20 - 12/21/2015
-© 2014-2015 Rick Strahl, West Wind Technologies 
+Version 1.21 - 1/19/2016
+© 2014-2016 Rick Strahl, West Wind Technologies 
 www.west-wind.com
 Licensed under MIT License
 http://en.wikipedia.org/wiki/MIT_License
@@ -26,7 +26,6 @@ http://en.wikipedia.org/wiki/MIT_License
             /// Option to set - see comments in code below.
             /// </param>        
             /// <returns type="jQuery" /> 
-
             var opt = $.extend({
                 // CSS styles or Attributes to monitor as comma delimited list
                 // For attributes use a attr_ prefix
