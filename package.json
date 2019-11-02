@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/RickStrahl/jquery-watch",
   "dependencies": {
-    "jquery": "^2.1.4"
+    "jquery": "^3.4.1"
   }
 }
