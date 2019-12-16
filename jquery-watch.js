@@ -54,8 +54,8 @@ http://en.wikipedia.org/wiki/MIT_License
 
                 var data = {
                     id: opt.id,
-                    props: opt.properties.split(','),
-                    vals: [opt.properties.split(',').length],
+                    props: opt.properties.split(/[ ,]+/),
+                    vals: [opt.properties.split(/[ ,]+/).length],
                     func: opt.callback, // user function
                     fnc: fnc, // __watcher internal
                     origProps: opt.properties,
